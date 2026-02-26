@@ -1,0 +1,9 @@
+<?php
+include "config.php";
+
+$id = $_GET['id'];
+
+mysqli_query($conn, "UPDATE businesses SET status='approved' WHERE id='$id'");
+
+header("Location: admin_dashboard.php");
+?>

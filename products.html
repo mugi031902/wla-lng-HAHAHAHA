@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Products - MAB-BILIS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="logo">MAB-BILIS</div>
+    <ul id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#businesses">Local businesses</a></li>
+        <li><a href="#spots">Tourist Spots</a></li>
+        <li><a href="login.html">Login</a></li>
+    </ul>
+</nav>
+
+<!-- PRODUCTS SECTION -->
+<section id="products">
+    <a href="index.html" class="back-link">← Back to Home</a>
+    <h2 id="businessTitle">Products</h2>
+    <p id="businessDescription" class="business-desc"></p>
+    <div id="productsContainer" class="cards">
+        <!-- Products will be loaded dynamically -->
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    &copy; 2026 MAB-BILIS. All rights reserved.
+</footer>
+
+<script src="app.js"></script>
+<script>
+    // Render products on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize data
+        initializeData();
+        updateNavigation();
+        
+        // Get businessId from URL
+        const params = new URLSearchParams(window.location.search);
+        const businessId = params.get('businessId');
+        
+        if (!businessId) {
+            document.getElementById('productsContainer').innerHTML = 
+                '<p style="text-align:center;">No business specified.</p>';
+            return;
+        }
+        
+        // Get business details
+        const business = getBusinessById(businessId);
+        if (!business) {
+            document.getElementById('productsContainer').innerHTML = 
+                '<p style="text-align:center;">Business not found.</p>';
+            return;
+        }
+        
+        // Update page title with business name
+        document.getElementById('businessTitle').textContent = business.name + ' Products';
+        document.getElementById('businessDescription').textContent = business.description;
+        
+        // Get products for this business
+        const products = getProductsByBusinessId(businessId);
+        
+        const container = document.getElementById('productsContainer');
+        
+        if (products.length === 0) {
+            container.innerHTML = '<p style="text-align:center;">No products available for this business yet.</p>';
+            return;
+        }
+        
+        let html = '<div class="cards">';
+        products.forEach(product => {
+            html += `
+                <div class="card product-card">
+                    <img src="${product.image}" alt="${product.name}">
+                    <h3>${product.name}</h3>
+                    <p>${product.description}</p>
+                    <p class="category">Category: ${product.category}</p>
+                    <p class="price">₱${product.price.toLocaleString()}</p>
+                </div>
+            `;
+        });
+        html += '</div>';
+        
+        container.innerHTML = html;
+    });
+</script>
+
+<style>
+    .back-link {
+        display: inline-block;
+        margin-bottom: 20px;
+        color: #2e7d32;
+        font-weight: 500;
+    }
+    
+    .back-link:hover {
+        text-decoration: underline;
+    }
+    
+    .business-desc {
+        text-align: center;
+        color: #555;
+        margin-bottom: 40px;
+        font-size: 16px;
+    }
+    
+    .product-card .price {
+        font-size: 24px;
+        color: #2e7d32;
+        font-weight: 700;
+        margin-top: 10px;
+    }
+    
+    .product-card .category {
+        font-size: 14px;
+        color: #888;
+        margin-top: 5px;
+    }
+</style>
+
+</body>
+</html>

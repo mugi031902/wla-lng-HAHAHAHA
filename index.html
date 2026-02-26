@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MAB-BILIS</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="logo">MAB-BILIS</div>
+    <ul id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#businesses">Local businesses</a></li>
+        <li><a href="#spots">Tourist Spots</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="signup.html">Sign Up</a></li>
+    </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <h1>MAB-BILIS</h1>
+    <p>Your guide to the best products, services, and tourist spots in Mabinay. Explore, discover, and enjoy!</p>
+    <a href="#businesses" class="btn">Explore Now</a>
+</section>
+
+<!-- LOCAL BUSINESSES -->
+<section id="businesses">
+    <h2>Local businesses</h2>
+    <div id="businessesContainer" class="cards">
+        <!-- Businesses will be loaded dynamically -->
+    </div>
+</section>
+
+<!-- TOURIST SPOTS -->
+<section id="spots">
+    <h2>Tourist Spots</h2>
+    <div id="spotsContainer" class="cards">
+        <!-- Tourist spots will be loaded dynamically -->
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    &copy; 2026 MAB-BILIS. All rights reserved.
+</footer>
+
+<script src="app.js"></script>
+<script>
+    // Render businesses and tourist spots on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeData();
+        renderBusinesses();
+        renderTouristSpots();
+        
+        // Check if user is logged in and update nav
+        const user = getCurrentUser();
+        if (user) {
+            const navLinks = document.getElementById('navLinks');
+            if (user.role === 'admin') {
+                navLinks.innerHTML = `
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="admin_dashboard.html">Dashboard</a></li>
+                    <li><a href="#" onclick="logout()">Logout (${user.name})</a></li>
+                `;
+            } else {
+                navLinks.innerHTML = `
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="business_dashboard.html">Dashboard</a></li>
+                    <li><a href="#" onclick="logout()">Logout (${user.name})</a></li>
+                `;
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
